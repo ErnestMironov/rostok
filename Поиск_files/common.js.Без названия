@@ -1,0 +1,394 @@
+$(function() {
+
+    $(document).on('click', '.table-btn.table-addCart', function(e) {
+        var parent_element = $(this).parents('tr');
+    	var id = $(this).attr('data-id');
+    	var price = $(this).attr('data-price');
+    	var quant = $('.quantity-'+id).val();
+        var sklad = $(this).attr('data-sklad');
+        var img_src = parent_element.find('img').attr('src');
+        var descr = parent_element.find('.table-item').text();
+        var link = parent_element.find('.table-analogue-info').attr('href');
+        var appl_link = parent_element.find('.table-analogue-car').attr('href');
+        var analog_link = parent_element.find('.table-analogue-text').attr('href');
+        var number = parent_element.find('.table-number').text();
+
+        var url = '/ajax/add_to_cart.php?id='+id+'&quant='+quant+'&sklad='+sklad+'&descr='+descr+'&link='+link+'&appl_link='+appl_link+'&analog_link='+analog_link+'&number='+number+'&img_src='+img_src+'&price='+price;
+        $.ajax({
+            url: url,
+            success: function(data) {
+                $('#top_basket').html(data);
+            },
+            error: function(msg) {}
+        });
+
+        return false;
+
+    });
+
+    $(document).on('click', '.component__quantity-btn.table-addCart', function(e) {
+        var parent_element = $(this).parents('.my-container');
+        var id = $(this).attr('data-id');
+        var price = $(this).attr('data-price');
+        var quant = $('.quantity-'+id).val();
+        var sklad = $(this).attr('data-sklad');
+        var img_src = parent_element.find('img').attr('src');
+        var descr = parent_element.find('.component__title').text();
+        var link = parent_element.find('.component__descr-analogue-info').attr('href');
+        var appl_link = parent_element.find('.component__descr-analogue-car').attr('href');
+        var analog_link = parent_element.find('.component__descr-analogue-text').attr('href');
+        var number = parent_element.find('.component__descr-number').text();
+        var lang = location.href.split('/')[3];
+
+        var url = '/ajax/add_to_cart.php?id='+id+'&quant='+quant+'&sklad='+sklad+'&descr='+descr+'&link='+link+'&appl_link='+appl_link+'&analog_link='+analog_link+'&number='+number+'&img_src='+img_src+'&price='+price+'&lang'+lang;
+        $.ajax({
+            url: url,
+            success: function(data) {
+                $('#top_basket').html(data);
+            },
+            error: function(msg) {}
+        });
+
+        return false;
+
+    });
+
+    $(document).on('click', '.add-car', function(e) {
+
+        var car = $(this).attr('data-car');
+
+        var url = '/ajax/add_car.php?car='+car;
+        $.ajax({
+            url: url,
+            success: function(data) {
+
+            },
+            error: function(msg) {}
+        });
+
+        return false;
+
+    });
+
+    $(document).on('click', '#update-user', function(e) {
+        let name = $('input[name="name"]').val();
+        let email = $('input[name="email"]').val();
+        let company = $('input[name="company"]').val();
+        let delivery_address = $('input[name="delivery-address"]').val();
+        let password = $('input[name="password"]').val();
+        let password_confirm = $('input[name="password-confirm"]').val();
+
+        $.ajax({
+            url: '/profile/personal/update_user.php',
+            method: 'POST',
+            data:{
+                name: name,
+                email: email,
+                company: company,
+                delivery_address: delivery_address,
+                password: password,
+                password_confirm: password_confirm,
+            },
+            datatype: 'html',
+            beforeSend: function(){
+                $('.form-status').empty();
+            },
+            success: function(data) {
+                $('.form-status').append(data);
+            },
+            error: function(msg) {}
+        });
+
+        return false;
+
+    });
+
+    $(document).on('click', '#do-register', function(e) {
+
+        var email = $('#reg_email').val();
+        var pass = $('#reg_pass').val();
+
+        var url = '/register.php?email='+email+'&pass='+pass;
+        $.ajax({
+            url: url,
+            success: function(data) {
+                alert('Вы успешно зарегистрироваались');
+            },
+            error: function(msg) {}
+        });
+
+        return false;
+
+    });
+
+    $(document).on('click', '.js-open-hidden-logos', function(e) {
+
+        $('.brands__item').css('display','flex');
+
+        return false;
+
+    });
+
+
+    $(".js-tabs .js-item").click(function() {
+        $(".js-tabs .js-item").removeClass("js-item--active").eq($(this).index()).addClass("js-item--active");
+        $(".js-content .js-block").hide().eq($(this).index()).fadeIn("normal");
+    }).eq(0).addClass("js-item--active");
+
+
+
+
+    $('.header__login-btn').click(function() {
+        if( $(this).parent('#login').hasClass('notLogged') ) {
+            if( $(this).next('.header__auth').hasClass('reveal') ) {
+                $(this).next('.header__auth').removeClass('reveal');
+                bodyOverlay(false);
+            } else {
+                closeModal();
+                $(this).next('.header__auth').addClass('reveal');
+                bodyOverlay(true);
+            }
+        }
+    });
+
+
+    $(document).on('click', '#repair-send', function () {
+        let name = $('#repair-form input[name="name"]').val();
+        let email = $('#repair-form input[name="email"]').val();
+        let phone = $('#repair-form input[name="phone"]').val();
+        let card_number = $('#repair-form input[name="card_number"]').val();
+        let mark = $('#repair-form input[name="mark"]').val();
+        let model = $('#repair-form input[name="model"]').val();
+        let vin_code = $('#repair-form input[name="vin_code"]').val();
+        let year = $('#repair-form input[name="year"]').val();
+        let doors_count = $('#repair-form input[name="doors_count"]').val();
+        let engine_volume = $('#repair-form input[name="engine_volume"]').val();
+        let engine_power = $('#repair-form input[name="engine_power"]').val();
+        let vehicle = $('#repair-form select[name="vehicle"]').val();
+        let fuel = $('#repair-form select[name="fuel"]').val();
+        let transmission = $('#repair-form select[name="transmission"]').val();
+        let additional_devices = $('#repair-form textarea[name="additional_devices"]').val();
+        let description = $('#repair-form textarea[name="description"]').val();
+        let lang = $(this).data('lang');
+
+        $.ajax({
+            url: '/zapros-na-remont/send_repair.php',
+            method: 'POST',
+            dataType: 'json',
+            data:{
+                name: name,
+                email: email,
+                phone: phone,
+                card_number: card_number,
+                mark: mark,
+                model: model,
+                vin_code: vin_code,
+                year: year,
+                doors_count: doors_count,
+                engine_volume: engine_volume,
+                engine_power: engine_power,
+                vehicle: vehicle,
+                fuel: fuel,
+                transmission: transmission,
+                additional_devices: additional_devices,
+                description: description,
+                lang: lang
+            },
+            beforeSend: function(){
+                $('.form-status-text').hide();
+            },
+            success: function(data) {
+                if(data.success){
+                    $('.form-status-positive').show();
+                }else if(data.error){
+                    $('.form-status-negative').show();
+                }
+            },
+            error: function(msg) {}
+        })
+
+    })
+
+    $(document).on('click', '#part-send', function () {
+        let name = $('#part-form input[name="name"]').val();
+        let email = $('#part-form input[name="email"]').val();
+        let phone = $('#part-form input[name="phone"]').val();
+        let mark = $('#part-form input[name="mark"]').val();
+        let model = $('#part-form input[name="model"]').val();
+        let vin_code = $('#part-form input[name="vin_code"]').val();
+        let year = $('#part-form input[name="year"]').val();
+        let engine_volume = $('#part-form input[name="engine_volume"]').val();
+        let engine_power = $('#part-form input[name="engine_power"]').val();
+        let fuel = $('#part-form select[name="fuel"]').val();
+        let part = $('#part-form textarea[name="part"]').val();
+        let lang = $(this).data('lang');
+
+        $.ajax({
+            url: '/zapros-na-zapchasti/send_part.php',
+            method: 'POST',
+            dataType: 'json',
+            data:{
+                name: name,
+                email: email,
+                phone: phone,
+                mark: mark,
+                model: model,
+                vin_code: vin_code,
+                year: year,
+                engine_volume: engine_volume,
+                engine_power: engine_power,
+                fuel: fuel,
+                part: part,
+                lang: lang
+            },
+            beforeSend: function(){
+                $('.form-status-text').hide();
+            },
+            success: function(data) {
+                if(data.success){
+                    $('.form-status-positive').show();
+                }else if(data.error){
+                    $('.form-status-negative').show();
+                }
+            },
+            error: function(msg) {}
+        })
+
+    })
+
+    function bodyOverlay(val) {
+        if(val) { $('body').addClass('modal-active'); }
+        else { $('body').removeClass('modal-active'); }
+    }
+
+    function closeModal() {
+        $('.modal.reveal').removeClass('reveal');
+        $('.reveal').removeClass('reveal');
+        $('.modal').closest('.opened').removeClass('opened');
+    }
+
+
+// демо вызов попапа по клику на баннер
+//$('.banners__img').magnificPopup({
+//	items: {
+//			src: '#popup-1',
+//			type: 'inline'
+//	}
+//});
+// закртыие попапа по клику на кнопку
+$('.popup__btn-close').click(function (e) {
+	e.preventDefault;
+	$.magnificPopup.close();
+})
+
+    $('.interaction__form-btn').on('click', function () {
+        let track_number = $('#interaction__track').val();
+
+        if(track_number.length){
+            $.get('/ajax/get_track_info.php',{track_number:track_number},function (result) {
+                if(result.error){
+                    $('#track_info').html('<i class="interaction__form-info-ic"></i>'+result.error.message)
+                }else{
+                    $('#track_info').html('<i class="interaction__form-info-ic"></i>'+result.success.status)
+                }
+            })
+        }
+    })
+});
+
+// var options = {
+//     url: "/ajax/search_city.php",
+//
+//     getValue: "name",
+//
+//     list: {
+//         maxNumberOfElements: 8,
+//         match: {
+//             enabled: true
+//         },
+//         sort: {
+//             enabled: true
+//         },
+//         onChooseEvent: function() {
+//             let index = $('#city').getSelectedItemIndex();
+//             console.log($('#city').getItemData(index));
+//         }
+//     },
+//
+//     theme: "square"
+// }
+
+/*
+var options = {
+
+    url: function(phrase) {
+        return "/ajax/search_city.php";
+    },
+
+    getValue: function(element) {
+        return element.name;
+    },
+
+    ajaxSettings: {
+        dataType: "json",
+        method: "POST",
+        data: {
+            dataType: "json"
+        }
+    },
+
+    preparePostData: function(data) {
+        data.phrase = $("#city").val();
+        return data;
+    },
+
+    requestDelay: 400
+};
+
+$(document).ready(function () {
+   $('#city').easyAutocomplete(options);
+});*/
+$(document).on('change', '#city', function () {
+    let name = $(this).val();
+    let did = $('input[name="delivery-type"]:checked').val();
+    $.ajax({
+        url: '/ajax/search_city.php',
+        method: 'POST',
+        dataType: 'html',
+        data:{
+            name: name,
+            did: did,
+        },
+        success: function(data) {
+            $('.form__delivery-type').html(data);
+            $('#payment').html('');
+        },
+        error: function(msg) {}
+    })
+});
+
+$(document).on('click','.form__delivery-label', function () {
+    let delivery_price = parseInt($(this).find('.delivery-price').text());
+    let total_price = parseFloat($('.table-sum').data('sum'));
+    let dec = Math.pow(10, 2);
+    let email = $('.ordering__form [name="email"]').val();
+    total_price = total_price + delivery_price;
+    total_price = Math.round(total_price * dec) / dec;
+    $('.table-sum').text((total_price+'€'));
+    let country = $('#city').val();
+    $.ajax({
+        url: '/ajax/ajax_payment.php',
+        method: 'POST',
+        dataType: 'html',
+        data:{
+            country: country,
+            email: email,
+            sum: total_price,
+        },
+        success: function(data) {
+            $('#payment').html('');
+            $('#payment').html(data);
+        },
+        error: function(msg) {}
+    })
+});

@@ -1,0 +1,6 @@
+/.cache
+/dist
+/index_old.html
+/node_modules
+/package-lock.json
+/styleFilter.css

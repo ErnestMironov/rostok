@@ -1,0 +1,32 @@
+
+.form__payment-label {
+    text-transform: uppercase;
+}
+
+.header__search-button {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    width: 50px;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+}
+.header__search-button:focus {
+    outline:none;
+}
+.header__search-button:before {
+    content: '';
+    display: block;
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    right: 19px;
+    top: 50%;
+    margin-top: -8px;
+    background: url(/local/templates/.default/assets/img/icons/search_white.svg) no-repeat 50% 50%;
+    -webkit-background-size: 100% 100%;
+    background-size: 100%;
+    z-index: 0;
+}
